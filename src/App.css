@@ -1,0 +1,11 @@
+.App {
+  padding: 10px;
+  text-align: left;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+h2,
+h1 {
+  margin: 10px 0;
+}
