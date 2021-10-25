@@ -10,23 +10,28 @@ export const Countries = () => {
 
   useEffect(() => {
     const fetchCountries = async () => {
-      try {
-        const result = await axios.get(
-          'https://travelbriefing.org/countries.json'
-        );
-        setAllCountries(result.data);
-      } catch {
-        setError(true);
+      const storedCountries = JSON.parse(localStorage.getItem('countries'));
+      if (storedCountries?.length > 0) {
+        setAllCountries(storedCountries);
+      } else {
+        try {
+          const result = await axios.get(
+            'https://travelbriefing.org/countries.json'
+          );
+          setAllCountries(result.data);
+          localStorage.setItem('countries', JSON.stringify(result.data));
+        } catch {
+          setError(true);
+        }
       }
       setLoading(false);
     };
-
     fetchCountries();
   }, []);
 
   const fetchRandomCountries = async () => {
-    const randomUniqueCountries = getRandomCountries(allCountries);
     setLoading(true);
+    const randomUniqueCountries = getRandomCountries(allCountries);
     try {
       const countriesData = await Promise.all(
         randomUniqueCountries.map(async ({ name }) => {
